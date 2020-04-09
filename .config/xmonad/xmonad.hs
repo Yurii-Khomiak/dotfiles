@@ -1,6 +1,7 @@
 import XMonad
 import System.IO
 import qualified XMonad.StackSet as W
+import Data.Default
 
 -- Util
 import XMonad.Util.Run(spawnPipe)
@@ -11,10 +12,10 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 
 -- Layout
-import Xmonad.Layout.NoBorders
 
 -- Actions
 import XMonad.Actions.SpawnOn
+import XMonad.Actions.PhysicalScreens
 import XMonad.Actions.CopyWindow (kill1)
 
 -------------------------------------------------------------------------------
@@ -22,7 +23,8 @@ import XMonad.Actions.CopyWindow (kill1)
 -------------------------------------------------------------------------------
 
 main = do
-    xmproc <- spawnPipe "xmobar ~/.config/xmobar/.xmobarrc"
+    xmproc0 <- spawnPipe "xmobar -x 0 ~/.config/xmobar/.xmobarrc"
+    xmproc1 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/.xmobarrc"
     xmonad $ defaultConfig {
         -- startupHook = myStartupHook,
 
@@ -32,7 +34,7 @@ main = do
         -- this must be in this order, docksEventHook must be last
         handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
         logHook = dynamicLogWithPP xmobarPP {
-                        ppOutput = hPutStrLn xmproc,
+                        ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x,
                         ppTitle = xmobarColor "green" "" . shorten 50
                         },
 
@@ -95,12 +97,21 @@ keybindings = [
     ("M-S-j", windows W.swapDown),
     ("M-S-k", windows W.swapUp),
 
+    -- Screen navigation
+    ("M-<F1>", viewScreen def 0),
+    ("M-<F2>", viewScreen def 1),
+    ("M-<F3>", viewScreen def 2),
+    ("M-S-<F1>", sendToScreen def 0),
+    ("M-S-<F2>", sendToScreen def 1),
+    ("M-S-<F3>", sendToScreen def 2),
+
     -- Layouts
     ("M-S-<Space>", sendMessage ToggleStruts),
 
     -- Spawning programs
     ("M-<Return>", spawn myTerminal),
     ("M-r", spawn "dmenu_run"), -- application launcher
+    ("M-/", spawn "lockscreen"),
     ("M-S-b", spawn myBrowser),
 
     -- Multimedia
