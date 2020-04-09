@@ -15,7 +15,7 @@ import XMonad.Hooks.ManageDocks
 
 -- Actions
 import XMonad.Actions.SpawnOn
-import XMonad.Actions.PhysicalScreens
+import XMonad.Actions.PhysicalScreens (viewScreen, sendToScreen, horizontalScreenOrderer)
 import XMonad.Actions.CopyWindow (kill1)
 
 -------------------------------------------------------------------------------
@@ -98,12 +98,12 @@ keybindings = [
     ("M-S-k", windows W.swapUp),
 
     -- Screen navigation
-    ("M-<F1>", viewScreen def 0),
-    ("M-<F2>", viewScreen def 1),
-    ("M-<F3>", viewScreen def 2),
-    ("M-S-<F1>", sendToScreen def 0),
-    ("M-S-<F2>", sendToScreen def 1),
-    ("M-S-<F3>", sendToScreen def 2),
+    ("M-<F1>", viewScreen horizontalScreenOrderer 0),
+    ("M-<F2>", viewScreen horizontalScreenOrderer 1),
+    ("M-<F3>", viewScreen horizontalScreenOrderer 2),
+    ("M-S-<F1>", sendToScreen horizontalScreenOrderer 0),
+    ("M-S-<F2>", sendToScreen horizontalScreenOrderer 1),
+    ("M-S-<F3>", sendToScreen horizontalScreenOrderer 2),
 
     -- Layouts
     ("M-S-<Space>", sendMessage ToggleStruts),
