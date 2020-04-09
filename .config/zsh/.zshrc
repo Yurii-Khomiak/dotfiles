@@ -14,5 +14,5 @@ HISTFILE=~/.config/zsh/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 
-alias gdot="git --git-dir=$HOME/.cfg/ --work-tree=$HOME"
+alias gdot="git --git-dir=$HOME/.config/dotgit/public/ --work-tree=$HOME"
 
