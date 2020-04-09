@@ -1,5 +1,6 @@
 import XMonad
 import System.IO
+import System.Environment (getEnv)
 import qualified XMonad.StackSet as W
 import Data.Default
 
@@ -25,6 +26,7 @@ import XMonad.Actions.CopyWindow (kill1)
 main = do
     xmproc0 <- spawnPipe "xmobar -x 0 ~/.config/xmobar/.xmobarrc"
     xmproc1 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/.xmobarrc"
+    myTerminal <- getEnv "TERMINAL"
     xmonad $ defaultConfig {
         -- startupHook = myStartupHook,
 
@@ -50,10 +52,6 @@ main = do
 -------------------------------------------------------------------------------
 
 myModKey   = mod4Mask -- Super Key
-
--- Programs
-myTerminal = "termite"
-myBrowser  = "chromium"
 
 -- Border settings
 myBorderWidth        = 2
@@ -109,10 +107,10 @@ keybindings = [
     ("M-S-<Space>", sendMessage ToggleStruts),
 
     -- Spawning programs
-    ("M-<Return>", spawn myTerminal),
+    ("M-<Return>", spawn "$TERMINAL"),
     ("M-r", spawn "dmenu_run"), -- application launcher
     ("M-/", spawn "lockscreen"),
-    ("M-S-b", spawn myBrowser),
+    ("M-S-b", spawn "$BROWSER"),
 
     -- Multimedia
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- unmute"),
