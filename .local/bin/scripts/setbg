@@ -1,0 +1,10 @@
+#!/bin/sh
+# Sets background
+
+bgfile="$HOME/.local/share/bg/bg"
+newbgfile="$1"
+
+[ -f "$newbgfile" ] && cp "$newbgfile" "$bgfile"
+
+[ -f "$bgfile" ] && xwallpaper --zoom "$bgfile"
+
