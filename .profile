@@ -1,5 +1,11 @@
+# Add .local/bin and it's dirs to PATH
+export PATH="$PATH:$(du $HOME/.local/bin | \
+	cut -f2 | \
+	sort | \
+	tr "\n" ":" | \
+	sed 's/:$//')"
+
 # Default programs
-export PATH="$PATH:$(du $HOME/.local/bin | cut -f2 | sort | tr "\n" ":" | sed 's/:$//')"
 export EDITOR="nvim"
 export TERMINAL="termite"
 export BROWSER="chromium"
