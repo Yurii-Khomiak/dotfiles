@@ -1,0 +1,14 @@
+#!/bin/sh
+# Creates shell script file with executable permissions and
+# opens it with $EDITOR if it's set
+
+script_file=$1
+
+[ -z "$script_file" ] && echo "Usage: mkscript <script_file>" && exit 1
+[ -f "$script_file" ] && printf "File \"$script_file\" already exists\n" && exit 1
+
+printf "#!/bin/sh\n\n\n\n" > "$script_file"
+chmod +x "$script_file"
+
+[ ! -z "$EDITOR" ] && $EDITOR "$script_file"
+
