@@ -13,37 +13,28 @@ import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers(isFullscreen,doFullFloat)
 
--- Layout
-import Layouts
-
 -- Actions
 import XMonad.Actions.SpawnOn
 import XMonad.Actions.PhysicalScreens(viewScreen, sendToScreen, horizontalScreenOrderer)
 import XMonad.Actions.CopyWindow(kill1)
+
+import Layouts
 
 -------------------------------------------------------------------------------
 -- Main
 -------------------------------------------------------------------------------
 
 main = do
-    xmproc0 <- spawnPipe "xmobar -x 0 ~/.config/xmobar/.xmobarrc"
-    xmproc1 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/.xmobarrc"
-    myTerminal <- getEnv "TERMINAL"
+    (bar0, bar1) <- spawnStatusBars
+    importantEnv <- genImportantEnv
     xmonad $ defaultConfig {
         -- startupHook = myStartupHook,
-
-        -- Adds support for a status bar and dock
-        manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig,
+        manageHook = myManageHook,
         layoutHook = myLayoutHook,
-        -- layoutHook = avoidStruts $ layoutHook defaultConfig,
         -- this must be in this order, docksEventHook must be last
         handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
-        logHook = dynamicLogWithPP xmobarPP {
-                        ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x,
-                        ppTitle = xmobarColor "green" "" . shorten 50
-                        },
-
-        terminal = myTerminal,
+        logHook = myLogHook bar0 bar1,
+        terminal = term importantEnv,
         modMask = myModKey,
         borderWidth = myBorderWidth,
         normalBorderColor = myNormalBorderColor,
@@ -61,6 +52,28 @@ myBorderWidth        = 2
 myNormalBorderColor  = "#292d3e"
 myFocusedBorderColor = "#bbc5ff"
 
+xmobarConfigFile = "~/.config/xmobar/.xmobarrc"
+
+-------------------------------------------------------------------------------
+-- Environment
+-------------------------------------------------------------------------------
+
+data ImportantEnvironment = ImportantEnvironment { term :: String }
+
+genImportantEnv = do
+    terminal <- getEnv "TERMINAL"
+    return ImportantEnvironment { term = terminal }
+
+-------------------------------------------------------------------------------
+-- Status Bar
+-------------------------------------------------------------------------------
+
+spawnXmobar x = spawnPipe ("xmobar -x " ++ x ++ " " ++ xmobarConfigFile)
+
+spawnStatusBars = do
+    bar0 <- spawnXmobar "0"
+    bar1 <- spawnXmobar "1"
+    return (bar0, bar1)
 
 -------------------------------------------------------------------------------
 -- Startup Hook
@@ -75,9 +88,8 @@ myFocusedBorderColor = "#bbc5ff"
 -- Manage Hook
 -------------------------------------------------------------------------------
 
-myManageHook = composeAll [
-    className =? "TelegramDesktop" --> doFloat,
-    (isFullscreen --> doFullFloat)
+myManageHook = manageDocks <+> composeAll [
+    className =? "TelegramDesktop" --> doFloat
     ]
 
 -------------------------------------------------------------------------------
@@ -87,6 +99,15 @@ myManageHook = composeAll [
 enabledLayouts = tall ||| monocle
 
 myLayoutHook = avoidStruts $ enabledLayouts
+
+-------------------------------------------------------------------------------
+-- Log Hook
+-------------------------------------------------------------------------------
+
+myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
+    ppOutput = \x -> hPutStrLn bar0 x >> hPutStrLn bar1 x,
+    ppTitle = xmobarColor "green" "" . shorten 50
+    }
 
 -------------------------------------------------------------------------------
 -- Keybindings
