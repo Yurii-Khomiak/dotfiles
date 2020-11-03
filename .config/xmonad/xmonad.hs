@@ -75,7 +75,7 @@ spawnStatusBars = do
     return (bar0, bar1)
 
 -------------------------------------------------------------------------------
--- Startup Hook
+-- Hooks
 -------------------------------------------------------------------------------
 
 -- myStartupHook = do
@@ -83,25 +83,13 @@ spawnStatusBars = do
     -- spawnOn "workspace2" "telegram-desktop"
     -- spawnOn "workspace3" myBrowser
 
--------------------------------------------------------------------------------
--- Manage Hook
--------------------------------------------------------------------------------
-
 myManageHook = manageDocks <+> composeAll [
     className =? "TelegramDesktop" --> doFloat
     ]
 
--------------------------------------------------------------------------------
--- Layout Hook
--------------------------------------------------------------------------------
-
-enabledLayouts = tall ||| monocle
-
-myLayoutHook = avoidStruts $ enabledLayouts
-
--------------------------------------------------------------------------------
--- Log Hook
--------------------------------------------------------------------------------
+myLayoutHook = avoidStruts
+    $ enabledLayouts
+        where enabledLayouts = tall ||| monocle
 
 myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
     ppOutput = \x -> hPutStrLn bar0 x >> hPutStrLn bar1 x,
