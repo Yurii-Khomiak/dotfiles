@@ -11,7 +11,6 @@ import XMonad.Util.EZConfig(additionalKeysP)
 -- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers(isFullscreen,doFullFloat)
 
 -- Actions
 import XMonad.Actions.SpawnOn
