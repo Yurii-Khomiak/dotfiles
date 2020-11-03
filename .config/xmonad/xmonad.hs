@@ -11,13 +11,15 @@ import XMonad.Util.EZConfig(additionalKeysP)
 -- Hooks
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers(isFullscreen,doFullFloat)
 
 -- Layout
+import Layouts
 
 -- Actions
 import XMonad.Actions.SpawnOn
-import XMonad.Actions.PhysicalScreens (viewScreen, sendToScreen, horizontalScreenOrderer)
-import XMonad.Actions.CopyWindow (kill1)
+import XMonad.Actions.PhysicalScreens(viewScreen, sendToScreen, horizontalScreenOrderer)
+import XMonad.Actions.CopyWindow(kill1)
 
 -------------------------------------------------------------------------------
 -- Main
@@ -32,7 +34,8 @@ main = do
 
         -- Adds support for a status bar and dock
         manageHook = manageDocks <+> myManageHook <+> manageHook defaultConfig,
-        layoutHook = avoidStruts $ layoutHook defaultConfig,
+        layoutHook = myLayoutHook,
+        -- layoutHook = avoidStruts $ layoutHook defaultConfig,
         -- this must be in this order, docksEventHook must be last
         handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
         logHook = dynamicLogWithPP xmobarPP {
@@ -73,8 +76,17 @@ myFocusedBorderColor = "#bbc5ff"
 -------------------------------------------------------------------------------
 
 myManageHook = composeAll [
-    className =? "TelegramDesktop" --> doFloat
+    className =? "TelegramDesktop" --> doFloat,
+    (isFullscreen --> doFullFloat)
     ]
+
+-------------------------------------------------------------------------------
+-- Layout Hook
+-------------------------------------------------------------------------------
+
+enabledLayouts = tall ||| monocle
+
+myLayoutHook = avoidStruts $ enabledLayouts
 
 -------------------------------------------------------------------------------
 -- Keybindings
