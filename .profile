@@ -24,3 +24,5 @@ export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 # Start X if on first TTY and it's not already running
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx
 
+sudo -n loadkeys "$HOME/.local/share/kbd/keymaps/personal.map"
+
