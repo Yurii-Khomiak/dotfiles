@@ -26,10 +26,13 @@ export NODE_REPL_HISTORY="$XDG_CACHE_HOME/node/.node_repl_history"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn"
 export npm_config_cache="$XDG_CACHE_HOME/npm"
 
+# For other programs
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 
 # Start X if on first TTY and it's not already running
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx
 
+# Add "user host = (root) NOPASSWD: /usr/bin/loadkeys" to /etc/sudoers for this
+# command to work
 sudo -n loadkeys "$XDG_DATA_HOME/kbd/keymaps/personal.map"
 
