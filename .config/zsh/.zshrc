@@ -17,3 +17,14 @@ SAVEHIST=10000
 alias gdot="git --git-dir=$HOME/.config/dotgit/public/ --work-tree=$HOME"
 alias ghci="ghci -ghci-script=$HOME/.config/ghci/startup"
 
+search_and_open_in_editor() {
+	local search_location=$1
+	du -a "$search_location" \
+		| awk '{print $2}' \
+		| fzf \
+		| xargs -r $EDITOR
+}
+
+sc() { search_and_open_in_editor "$HOME/.config" }
+ssc() { search_and_open_in_editor "$HOME/.local/bin/scripts" }
+
