@@ -9,6 +9,9 @@ PS1="[%F{${PS1_HOSTNAME_COLOR}}%M%f%F{${PS1_AT_COLOR}}@%f%F{${PS1_USERNAME_COLOR
 autoload -Uz compinit
 compinit
 
+# Enable VI mode
+bindkey -v
+
 # History settings
 HISTFILE="$XDG_CONFIG_HOME/zsh/.histfile"
 HISTSIZE=10000
