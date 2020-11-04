@@ -100,40 +100,54 @@ myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
 -- Keybindings
 -------------------------------------------------------------------------------
 
-keybindings = [
-    -- XMonad
-    ("M-S-r", spawn "xmonad --restart"),
+xmonadKeybindings = [
+    ("M-S-r", spawn "xmonad --restart")
+    ]
 
-    -- Windows
-    ("M-S-e", kill1),
+windowKeybindings = [
+    ("M-S-e", kill1)
+    ]
 
-    -- Windows navigation
+windowNavigationKeybindings = [
     ("M-m", windows W.focusMaster),
     ("M-j", windows W.focusDown),
     ("M-k", windows W.focusUp),
     ("M-S-m", windows W.swapMaster),
     ("M-S-j", windows W.swapDown),
-    ("M-S-k", windows W.swapUp),
+    ("M-S-k", windows W.swapUp)
+    ]
 
-    -- Screen navigation
+screenNavigationKeybindings = [
     ("M-<F1>", viewScreen horizontalScreenOrderer 0),
     ("M-<F2>", viewScreen horizontalScreenOrderer 1),
     ("M-<F3>", viewScreen horizontalScreenOrderer 2),
     ("M-S-<F1>", sendToScreen horizontalScreenOrderer 0),
     ("M-S-<F2>", sendToScreen horizontalScreenOrderer 1),
-    ("M-S-<F3>", sendToScreen horizontalScreenOrderer 2),
+    ("M-S-<F3>", sendToScreen horizontalScreenOrderer 2)
+    ]
 
-    -- Layouts
-    ("M-S-<Space>", sendMessage ToggleStruts),
+layoutKeybindings = [
+    ("M-S-<Space>", sendMessage ToggleStruts)
+    ]
 
-    -- Spawning programs
+programSpawningKeybindings = [
     ("M-<Return>", spawn "$TERMINAL"),
     ("M-r", spawn "dmenu_run"), -- application launcher
     ("M-/", spawn "lockscreen"),
-    ("M-S-b", spawn "$BROWSER"),
+    ("M-S-b", spawn "$BROWSER")
+    ]
 
-    -- Multimedia
+mediaKeybinding = [
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- unmute"),
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
     ]
+
+keybindings = concatKeybindings [xmonadKeybindings,
+    windowKeybindings,
+    windowNavigationKeybindings,
+    screenNavigationKeybindings,
+    layoutKeybindings,
+    programSpawningKeybindings,
+    mediaKeybinding
+    ] where concatKeybindings = foldl (++) []
 
