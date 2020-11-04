@@ -15,4 +15,5 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 alias gdot="git --git-dir=$HOME/.config/dotgit/public/ --work-tree=$HOME"
+alias ghci="ghci -ghci-script=$HOME/.config/ghci/startup"
 
