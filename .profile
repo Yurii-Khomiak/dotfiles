@@ -24,7 +24,7 @@ export XMONAD_CACHE_DIR="$XDG_CACHE_HOME/xmonad"
 export XMONAD_DATA_DIR="$XDG_DATA_HOME/xmonad"
 export NODE_REPL_HISTORY="$XDG_CACHE_HOME/node/.node_repl_history"
 export YARN_CACHE_FOLDER="$XDG_CACHE_HOME/yarn"
-export npm_config_cache="$XDG_CACHE_HOME/npm"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm"
 
 # For other programs
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
