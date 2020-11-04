@@ -19,6 +19,8 @@ export XMONAD_CACHE_DIR="$HOME/.cache/xmonad"
 export XMONAD_DATA_DIR="$HOME/.local/share/xmonad"
 export NODE_REPL_HISTORY="$HOME/.cache/node/.node_repl_history"
 
+export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
+
 # Start X if on first TTY and it's not already running
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx
 
