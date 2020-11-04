@@ -17,6 +17,8 @@ HISTFILE="$XDG_CONFIG_HOME/zsh/.histfile"
 HISTSIZE=10000
 SAVEHIST=10000
 
+alias ll="ls -Al"
+
 alias gdot="git --git-dir=$XDG_CONFIG_HOME/dotgit/public/ --work-tree=$HOME"
 alias ghci="ghci -ghci-script=$XDG_CONFIG_HOME/ghci/startup"
 
