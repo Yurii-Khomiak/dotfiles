@@ -10,12 +10,12 @@ autoload -Uz compinit
 compinit
 
 # History settings
-HISTFILE=~/.config/zsh/.histfile
+HISTFILE="$XDG_CONFIG_HOME/zsh/.histfile"
 HISTSIZE=10000
 SAVEHIST=10000
 
-alias gdot="git --git-dir=$HOME/.config/dotgit/public/ --work-tree=$HOME"
-alias ghci="ghci -ghci-script=$HOME/.config/ghci/startup"
+alias gdot="git --git-dir=$XDG_CONFIG_HOME/dotgit/public/ --work-tree=$HOME"
+alias ghci="ghci -ghci-script=$XDG_CONFIG_HOME/ghci/startup"
 
 search_and_open_in_editor() {
 	local search_location=$1
@@ -25,6 +25,6 @@ search_and_open_in_editor() {
 		| xargs -r $EDITOR
 }
 
-sc() { search_and_open_in_editor "$HOME/.config" }
+sc() { search_and_open_in_editor "$XDG_CONFIG_HOME" }
 ssc() { search_and_open_in_editor "$HOME/.local/bin/scripts" }
 

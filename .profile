@@ -10,19 +10,24 @@ export EDITOR="nvim"
 export TERMINAL="termite"
 export BROWSER="chromium"
 
+# XDG variables
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+
 # Cleaning home directory
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # may break some DMs
-export ZDOTDIR="$HOME/.config/zsh"
-export LESSHISTSIZE="-"
-export XMONAD_CONFIG_DIR="$HOME/.config/xmonad"
-export XMONAD_CACHE_DIR="$HOME/.cache/xmonad"
-export XMONAD_DATA_DIR="$HOME/.local/share/xmonad"
-export NODE_REPL_HISTORY="$HOME/.cache/node/.node_repl_history"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export LESSHISTSIZE="$XDG_CACHE_HOME/.lesshst"
+export XMONAD_CONFIG_DIR="$XDG_CONFIG_HOME/xmonad"
+export XMONAD_CACHE_DIR="$XDG_CACHE_HOME/xmonad"
+export XMONAD_DATA_DIR="$XDG_DATA_HOME/xmonad"
+export NODE_REPL_HISTORY="$XDG_CACHE_HOME/node/.node_repl_history"
 
 export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 
 # Start X if on first TTY and it's not already running
 [ "$(tty)" = "/dev/tty1" ] && ! pgrep -x Xorg >/dev/null && exec startx
 
-sudo -n loadkeys "$HOME/.local/share/kbd/keymaps/personal.map"
+sudo -n loadkeys "$XDG_DATA_HOME/kbd/keymaps/personal.map"
 
