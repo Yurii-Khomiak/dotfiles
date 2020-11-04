@@ -41,7 +41,7 @@ main = do
         } `additionalKeysP` keybindings
 
 -------------------------------------------------------------------------------
--- Basic Settings
+-- Constants
 -------------------------------------------------------------------------------
 
 myModKey   = mod4Mask -- Super Key
@@ -83,13 +83,11 @@ spawnStatusBars = do
     -- spawnOn "workspace2" "telegram-desktop"
     -- spawnOn "workspace3" myBrowser
 
-myManageHook = manageDocks <+> composeAll [
-    className =? "TelegramDesktop" --> doFloat
-    ]
+myManageHook = manageDocks
 
 myLayoutHook = avoidStruts
     $ enabledLayouts
-        where enabledLayouts = tall ||| monocle
+        where enabledLayouts = tallGolden ||| monocle
 
 myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
     ppOutput = \x -> hPutStrLn bar0 x >> hPutStrLn bar1 x,
@@ -137,17 +135,16 @@ programSpawningKeybindings = [
     ("M-S-b", spawn "$BROWSER")
     ]
 
-mediaKeybinding = [
+mediaKeybindings = [
     ("<XF86AudioLowerVolume>", spawn "amixer set Master 5%- unmute"),
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
     ]
 
-keybindings = concatKeybindings [xmonadKeybindings,
-    windowKeybindings,
-    windowNavigationKeybindings,
-    screenNavigationKeybindings,
-    layoutKeybindings,
-    programSpawningKeybindings,
-    mediaKeybinding
-    ] where concatKeybindings = foldl (++) []
+keybindings = xmonadKeybindings
+    ++ windowKeybindings
+    ++ windowNavigationKeybindings
+    ++ screenNavigationKeybindings
+    ++ layoutKeybindings
+    ++ programSpawningKeybindings
+    ++ mediaKeybindings
 

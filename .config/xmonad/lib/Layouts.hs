@@ -1,5 +1,6 @@
 module Layouts
-( tall
+( tallEqual
+, tallGolden
 , monocle
 ) where
 
@@ -18,12 +19,14 @@ applySpacing :: Integer -> l a -> ModifiedLayout Spacing l a
 applySpacing s = spacingRaw False equalSpacedBorder True equalSpacedBorder True
     where equalSpacedBorder = Border s s s s
 
-tall = replaceLayout "tall"
+tall ratio = replaceLayout "tall"
     $ applySpacing defaultSpacing
     $ Tall numOfMasterWindows resizeIncrement ratio
         where numOfMasterWindows = 1
               resizeIncrement = 3/100
-              ratio = goldenRatio
+
+tallEqual = tall (1/2)
+tallGolden = tall goldenRatio
 
 monocle = noBorders layout
     where layout = replaceLayout "monocle"
