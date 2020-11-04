@@ -20,7 +20,7 @@ alias ghci="ghci -ghci-script=$HOME/.config/ghci/startup"
 search_and_open_in_editor() {
 	local search_location=$1
 	du -a "$search_location" \
-		| awk '{print $2}' \
+		| cut -f2 \
 		| fzf \
 		| xargs -r $EDITOR
 }
