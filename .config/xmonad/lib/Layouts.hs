@@ -4,9 +4,9 @@ module Layouts
 , monocle
 ) where
 
-import XMonad.Layout
-import XMonad.Layout.Spacing
-import XMonad.Layout.NoBorders
+import XMonad.Layout(Tall(..), Full(..))
+import XMonad.Layout.Spacing(spacingRaw, Spacing, Border(..))
+import XMonad.Layout.NoBorders(noBorders)
 import XMonad.Layout.LayoutModifier(ModifiedLayout)
 import XMonad.Layout.Renamed(renamed, Rename(Replace))
 
