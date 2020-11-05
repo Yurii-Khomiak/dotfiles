@@ -1,10 +1,6 @@
-# Launch needed programs
-unclutter & # hide unactive mouse
-
-# Set wallpaper
-setbg &
-
-# Map CapsLock to Esc
-setxkbmap -option caps:escape
+unclutter &			# hide unactive mouse
+setbg &				# Set wallpaper
+setxkbmap -option caps:escape	# Map CapsLock to Esc
+picom -b			# compositor
 
 exec xmonad
