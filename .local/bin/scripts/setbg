@@ -1,10 +1,39 @@
 #!/bin/sh
-# Sets background
+# Purpose: set background
+# Given path to a file will set it as a background
+# Given path to a directory will choose random image
+# Given no arguments chose random image
+#	from directories listed in default_wallpapers_file
 
 bgfile="$HOME/.local/share/bg/bg"
-newbgfile="$1"
+default_wallpapers_file="$XDG_CONFIG_HOME/wall_dirs"
 
-[ -f "$newbgfile" ] && cp "$newbgfile" "$bgfile"
+get_random_img() {
+	local imgregex=".*\.\(jpg\|png\|jpeg\)$"
+	echo "$(find $@ -type f -iregex $imgregex | shuf -n 1)"
+}
 
-[ -f "$bgfile" ] && xwallpaper --zoom "$bgfile"
+read_default_wallpapers() {
+	local i=1
+	wallpaper_dirs=""
+	while read line; do
+		wallpaper_dirs="${wallpaper_dirs} $(echo "$line" | sed s\|~\|$HOME\|)"
+		i=$((i+1))
+	done < $default_wallpapers_file
+	echo "$wallpaper_dirs"
+}
+
+select_new_background_img() {
+	if [ -f "$1" ]; then
+		echo "$(readlink -f "$1")"
+	elif [ -d "$1" ]; then
+		echo "$(get_random_img "$(readlink -f "$1")")"
+	elif [ -f "$default_wallpapers_file" ]; then
+		echo "$(get_random_img "$(read_default_wallpapers)")"
+	fi
+}
+
+new_bgfile="$(select_new_background_img "$1")"
+
+[ -f "$new_bgfile" ] && ln -sf "$new_bgfile" "$bgfile" && xwallpaper --zoom "$bgfile"
 
