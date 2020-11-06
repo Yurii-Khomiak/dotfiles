@@ -85,9 +85,10 @@ spawnStatusBars = do
 
 myManageHook = manageDocks
 
-myLayoutHook = avoidStruts
-    $ enabledLayouts
-        where enabledLayouts = tallGolden ||| monocle
+myLayoutHook = avoidStruts $ layouts
+    where layouts = tallEqual
+            ||| monocle
+            ||| wideEqual
 
 myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
     ppOutput = \x -> hPutStrLn bar0 x >> hPutStrLn bar1 x,
