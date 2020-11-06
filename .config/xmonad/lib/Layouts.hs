@@ -7,6 +7,7 @@ module Layouts
 ) where
 
 import XMonad.Layout(Tall(..), Full(..), Mirror(..))
+import XMonad.Layout.Fullscreen(fullscreenFull)
 import XMonad.Layout.Spacing(spacingRaw, Spacing, Border(..))
 import XMonad.Layout.NoBorders(noBorders)
 import XMonad.Layout.LayoutModifier(ModifiedLayout)
@@ -35,5 +36,7 @@ tallAndWide r = (t, w)
 (tallGolden, wideGolden) = tallAndWide goldenRatio
 
 monocle = noBorders layout
-    where layout = rename "Monocle" $ Full
+    where layout = rename "Monocle"
+            $ fullscreenFull
+            $ Full
 

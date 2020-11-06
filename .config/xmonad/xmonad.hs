@@ -17,6 +17,8 @@ import XMonad.Actions.SpawnOn
 import XMonad.Actions.PhysicalScreens(viewScreen, sendToScreen, horizontalScreenOrderer)
 import XMonad.Actions.CopyWindow(kill1)
 
+import XMonad.Layout.Fullscreen(fullscreenEventHook, fullscreenManageHook)
+
 import Layouts
 
 -------------------------------------------------------------------------------
@@ -31,7 +33,9 @@ main = do
         manageHook = myManageHook,
         layoutHook = myLayoutHook,
         -- this must be in this order, docksEventHook must be last
-        handleEventHook = handleEventHook defaultConfig <+> docksEventHook,
+        handleEventHook = handleEventHook defaultConfig
+            <+> fullscreenEventHook
+            <+> docksEventHook,
         logHook = myLogHook bar0 bar1,
         terminal = term importantEnv,
         modMask = myModKey,
@@ -83,7 +87,7 @@ spawnStatusBars = do
     -- spawnOn "workspace2" "telegram-desktop"
     -- spawnOn "workspace3" myBrowser
 
-myManageHook = manageDocks
+myManageHook = manageDocks <+> fullscreenManageHook
 
 myLayoutHook = avoidStruts $ layouts
     where layouts = tallEqual
