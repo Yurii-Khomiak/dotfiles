@@ -5,7 +5,7 @@
 # Given no arguments chose random image
 #	from directories listed in default_wallpapers_file
 
-bgfile="$HOME/.local/share/bg/bg"
+bgfile="$XDG_DATA_HOME/bg/bg"
 default_wallpapers_file="$XDG_CONFIG_HOME/wall_dirs"
 
 get_random_img() {
@@ -14,11 +14,9 @@ get_random_img() {
 }
 
 read_default_wallpapers() {
-	local i=1
-	wallpaper_dirs=""
+	local wallpaper_dirs=""
 	while read line; do
 		wallpaper_dirs="${wallpaper_dirs} $(echo "$line" | sed s\|~\|$HOME\|)"
-		i=$((i+1))
 	done < $default_wallpapers_file
 	echo "$wallpaper_dirs"
 }
