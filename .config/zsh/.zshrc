@@ -24,7 +24,7 @@ alias ghci="ghci -ghci-script=$XDG_CONFIG_HOME/ghci/startup"
 
 search_and_open_in_editor() {
 	local search_location=$1
-	du -a "$search_location" \
+	find "$search_location" -type f\
 		| cut -f2 \
 		| fzf \
 		| xargs -r $EDITOR
