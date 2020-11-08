@@ -119,8 +119,9 @@ myLogHook bars = dynamicLogWithPP xmobarPP {
               fmtCurrentWs id = fmtWs wsBc ("[" ++ id ++ "]")
               fmtVisibleWs = fmtWs "black"
               order (ws:_:t:_) = [ws, t]
-              outputToAll (x:xs) msg = hPutStrLn x msg >> outputToAll xs msg
-              outputToAll (x:_) msg = hPutStrLn x msg
+              outputToAll bars msg = doOutput bars
+                  where doOutput (x:xs) = hPutStrLn x msg >> outputToAll xs msg
+                        doOutput (x:_) = hPutStrLn x msg
               white = "#e4ebed"
               wsBc = "#1a6078"
 
