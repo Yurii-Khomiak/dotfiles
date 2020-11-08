@@ -18,6 +18,8 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 alias ll="ls -Al"
+alias xmr="xmonad --recompile"
+alias xmrr="xmonad --recompile && xmonad --restart"
 
 alias gdot="git --git-dir=$XDG_CONFIG_HOME/dotgit/public/ --work-tree=$HOME"
 alias ghci="ghci -ghci-script=$XDG_CONFIG_HOME/ghci/startup"
