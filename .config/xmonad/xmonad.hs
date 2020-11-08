@@ -106,8 +106,8 @@ myLayoutHook = avoidStruts
 myLogHook bars = dynamicLogWithPP xmobarPP {
     ppTitle = fmtTitle,
     ppTitleSanitize = sanitTitle,
-    ppCurrent = fmtWs currentWsBc,
-    ppVisible = fmtWs "black",
+    ppCurrent = fmtCurrentWs,
+    ppVisible = fmtVisibleWs,
     ppSep = "",
     ppWsSep = " ",
     ppOrder = order,
@@ -115,12 +115,14 @@ myLogHook bars = dynamicLogWithPP xmobarPP {
     }
         where fmtTitle t = xmobarColor white "" t
               sanitTitle t = " ~ " ++ (shorten 50 t)
-              fmtWs bc id = xmobarColor white bc (" " ++ id ++ " ")
+              fmtWs bc id = xmobarColor white bc id
+              fmtCurrentWs id = fmtWs wsBc ("[" ++ id ++ "]")
+              fmtVisibleWs = fmtWs "black"
               order (ws:_:t:_) = [ws, t]
               outputToAll (x:xs) msg = hPutStrLn x msg >> outputToAll xs msg
               outputToAll (x:_) msg = hPutStrLn x msg
               white = "#e4ebed"
-              currentWsBc = "#1a6078"
+              wsBc = "#1a6078"
 
 -------------------------------------------------------------------------------
 -- Keybindings
