@@ -36,7 +36,6 @@ main = do
 -------------------------------------------------------------------------------
 
 defaults env bars = def {
-    -- startupHook = myStartupHook,
     manageHook = myManageHook,
     layoutHook = myLayoutHook,
     -- this must be in this order, docksEventHook must be last
@@ -44,6 +43,7 @@ defaults env bars = def {
         <+> fullscreenEventHook
         <+> docksEventHook,
     logHook = myLogHook bars,
+    workspaces = myWorkspaces,
     terminal = term env,
     modMask = myModKey,
     borderWidth = myBorderWidth,
@@ -62,17 +62,25 @@ myBorderWidth        = 2
 myNormalBorderColor  = "#292d3e"
 myFocusedBorderColor = "#bbc5ff"
 
+myWorkspaces = (map show [1..9]) ++ myExtraWorkspaces
+myExtraWorkspaces = ["0"]
+
 xmobarConfigFile = "~/.config/xmobar/.xmobarrc"
 
 -------------------------------------------------------------------------------
 -- Environment
 -------------------------------------------------------------------------------
 
-data ImportantEnvironment = ImportantEnvironment { term :: String }
+data ImportantEnvironment = ImportantEnvironment { term :: String
+                                                 , browser :: String
+                                                 }
 
 genImportantEnv = do
-    terminal <- getEnv "TERMINAL"
-    return ImportantEnvironment { term = terminal }
+    terminalVar <- getEnv "TERMINAL"
+    browserVar <- getEnv "BROWSER"
+    return ImportantEnvironment { term = terminalVar
+                                , browser = browserVar
+                                }
 
 -------------------------------------------------------------------------------
 -- Status Bar
@@ -89,11 +97,6 @@ spawnStatusBars = do
 -------------------------------------------------------------------------------
 -- Hooks
 -------------------------------------------------------------------------------
-
--- myStartupHook = do
-    -- spawnOn "workspace1" myTerminal
-    -- spawnOn "workspace2" "telegram-desktop"
-    -- spawnOn "workspace3" myBrowser
 
 myManageHook = manageDocks <+> fullscreenManageHook
 
@@ -171,6 +174,11 @@ mediaKeybindings = [
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
     ]
 
+extraWorkspaceKeybinding = [
+    ("M-0", windows $ W.greedyView (head myExtraWorkspaces)),
+    ("M-S-0", windows $ W.shift (head myExtraWorkspaces))
+    ]
+
 keybindings = xmonadKeybindings
     ++ windowKeybindings
     ++ windowNavigationKeybindings
@@ -178,4 +186,5 @@ keybindings = xmonadKeybindings
     ++ layoutKeybindings
     ++ programSpawningKeybindings
     ++ mediaKeybindings
+    ++ extraWorkspaceKeybinding
 
