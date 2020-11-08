@@ -5,14 +5,14 @@ Config {
         -- , fgColor =      "#646464"
         , fgColor =      "#e4ebed"
         , position =     Top
-        , border =       BottomB
+        , border =       NoBorder
         , borderColor =  "#646464"
         , alpha = 200
 
         -- layout
         , sepChar =  "%"   -- delineator between plugin names and straight text
         , alignSep = "}{"  -- separator between left-right alignment
-        , template = "%StdinReader% }{%dynnetwork% | %multicpu% | %coretemp% | %memory% | Vol: %volume% | %battery% || %date% "
+        , template = "%StdinReader% }{%dynnetwork% | %multicpu% | %coretemp% | %memory% | Vol: %volume% | %battery% | %date% "
 
         -- general behavior
         , lowerOnStart =     True    -- send to bottom of window stack on start
