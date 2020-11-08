@@ -1,7 +1,6 @@
 Config {
         -- appearance
         font =         "xft:Bitstream Vera Sans Mono:size=9:bold:antialias=true"
-        , additionalFonts = [ "xft:FontAwesome:pixelsize=13" ]
         , bgColor =      "black"
         -- , fgColor =      "#646464"
         , fgColor =      "#e4ebed"
