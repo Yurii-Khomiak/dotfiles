@@ -18,6 +18,7 @@ import XMonad.Actions.PhysicalScreens(viewScreen, sendToScreen, horizontalScreen
 import XMonad.Actions.CopyWindow(kill1)
 
 import XMonad.Layout.Fullscreen(fullscreenEventHook, fullscreenManageHook)
+import XMonad.Layout.IndependentScreens
 
 import Layouts
 
@@ -26,23 +27,29 @@ import Layouts
 -------------------------------------------------------------------------------
 
 main = do
-    (bar0, bar1) <- spawnStatusBars
+    bars <- spawnStatusBars
     importantEnv <- genImportantEnv
-    xmonad $ defaultConfig {
-        -- startupHook = myStartupHook,
-        manageHook = myManageHook,
-        layoutHook = myLayoutHook,
-        -- this must be in this order, docksEventHook must be last
-        handleEventHook = handleEventHook defaultConfig
-            <+> fullscreenEventHook
-            <+> docksEventHook,
-        logHook = myLogHook bar0 bar1,
-        terminal = term importantEnv,
-        modMask = myModKey,
-        borderWidth = myBorderWidth,
-        normalBorderColor = myNormalBorderColor,
-        focusedBorderColor = myFocusedBorderColor
-        } `additionalKeysP` keybindings
+    xmonad $ defaults importantEnv bars
+
+-------------------------------------------------------------------------------
+-- Main
+-------------------------------------------------------------------------------
+
+defaults env bars = def {
+    -- startupHook = myStartupHook,
+    manageHook = myManageHook,
+    layoutHook = myLayoutHook,
+    -- this must be in this order, docksEventHook must be last
+    handleEventHook = handleEventHook def
+        <+> fullscreenEventHook
+        <+> docksEventHook,
+    logHook = myLogHook bars,
+    terminal = term env,
+    modMask = myModKey,
+    borderWidth = myBorderWidth,
+    normalBorderColor = myNormalBorderColor,
+    focusedBorderColor = myFocusedBorderColor
+    } `additionalKeysP` keybindings
 
 -------------------------------------------------------------------------------
 -- Constants
@@ -71,12 +78,13 @@ genImportantEnv = do
 -- Status Bar
 -------------------------------------------------------------------------------
 
-spawnXmobar x = spawnPipe ("xmobar -x " ++ x ++ " " ++ xmobarConfigFile)
+spawnXmobar i = spawnPipe ("xmobar -x " ++ i ++ " " ++ xmobarConfigFile)
 
 spawnStatusBars = do
-    bar0 <- spawnXmobar "0"
-    bar1 <- spawnXmobar "1"
-    return (bar0, bar1)
+    n <- countScreens
+    bars <- mapM spawnXmobar (displays n)
+    return bars
+        where displays n = map show [0 .. n-1]
 
 -------------------------------------------------------------------------------
 -- Hooks
@@ -89,22 +97,37 @@ spawnStatusBars = do
 
 myManageHook = manageDocks <+> fullscreenManageHook
 
-myLayoutHook = avoidStruts $ layouts
-    where layouts = tallEqual
-            ||| monocle
-            ||| wideEqual
+myLayoutHook = avoidStruts
+    $ layouts
+        where layouts = tall
+                ||| monocle
+                ||| wide
 
-myLogHook bar0 bar1 = dynamicLogWithPP xmobarPP {
-    ppOutput = \x -> hPutStrLn bar0 x >> hPutStrLn bar1 x,
-    ppTitle = xmobarColor "green" "" . shorten 50
+myLogHook bars = dynamicLogWithPP xmobarPP {
+    ppTitle = fmtTitle,
+    ppTitleSanitize = sanitTitle,
+    ppCurrent = fmtWs currentWsBc,
+    ppVisible = fmtWs "black",
+    ppSep = "",
+    ppWsSep = " ",
+    ppOrder = order,
+    ppOutput = outputToAll bars
     }
+        where fmtTitle t = xmobarColor white "" t
+              sanitTitle t = " ~ " ++ (shorten 50 t)
+              fmtWs bc id = xmobarColor white bc (" " ++ id ++ " ")
+              order (ws:_:t:_) = [ws, t]
+              outputToAll (x:xs) msg = hPutStrLn x msg >> outputToAll xs msg
+              outputToAll (x:_) msg = hPutStrLn x msg
+              white = "#e4ebed"
+              currentWsBc = "#1a6078"
 
 -------------------------------------------------------------------------------
 -- Keybindings
 -------------------------------------------------------------------------------
 
 xmonadKeybindings = [
-    ("M-S-r", spawn "xmonad --restart")
+    ("M-S-r", spawn "killall xmobar; xmonad --restart")
     ]
 
 windowKeybindings = [
