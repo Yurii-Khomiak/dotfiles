@@ -3,7 +3,7 @@ PS1_HOSTNAME_COLOR="yellow"
 PS1_AT_COLOR="blue"
 PS1_USERNAME_COLOR="green"
 NEWLINE=$'\n'
-PS1="[%F{${PS1_HOSTNAME_COLOR}}%M%f%F{${PS1_AT_COLOR}}@%f%F{${PS1_USERNAME_COLOR}}%n%f %~]${NEWLINE}$ "
+PS1="[%F{${PS1_HOSTNAME_COLOR}}%n%f%F{${PS1_AT_COLOR}}@%f%F{${PS1_USERNAME_COLOR}}%M%f %~]${NEWLINE}$ "
 
 # Enable autocompletion
 autoload -Uz compinit
