@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Usage: x v1 v2
+# Outputs y = (x/v1) * v2
+
+y=$(awk -v x=$1 -v v1=$2 -v v2=$3 'BEGIN{y=(x/v1)*v2; print y;}')
+echo $y
+
