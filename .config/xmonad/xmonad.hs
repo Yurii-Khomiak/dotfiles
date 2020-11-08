@@ -166,7 +166,9 @@ programSpawningKeybindings = [
     ("M-<Return>", spawn "$TERMINAL"),
     ("M-r", spawn "dmenu_run"), -- application launcher
     ("M-/", spawn "lockscreen"),
-    ("M-S-b", spawn "$BROWSER")
+    ("M-S-b", spawn "$BROWSER"),
+    ("<Print>", spawn "tkscreen -s"),
+    ("M-<Print>", spawn "tkscreen")
     ]
 
 mediaKeybindings = [
