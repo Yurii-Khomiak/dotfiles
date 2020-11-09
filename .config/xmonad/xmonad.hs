@@ -86,6 +86,9 @@ genImportantEnv = do
 -- Status Bar
 -------------------------------------------------------------------------------
 
+type StatusBar = Handle
+
+spawnXmobar :: (MonadIO m) => String -> m StatusBar
 spawnXmobar i = spawnPipe ("xmobar -x " ++ i ++ " " ++ xmobarConfigFile)
 
 spawnStatusBars = do
@@ -93,6 +96,11 @@ spawnStatusBars = do
     bars <- mapM spawnXmobar (displays n)
     return bars
         where displays n = map show [0 .. n-1]
+
+logToAllBars :: [StatusBar] -> String -> IO ()
+logToAllBars bars msg = doLog bars
+    where doLog (x:xs) = hPutStrLn x msg >> doLog xs
+          doLog (x:_) = hPutStrLn x msg
 
 -------------------------------------------------------------------------------
 -- Hooks
@@ -114,7 +122,7 @@ myLogHook bars = dynamicLogWithPP xmobarPP {
     ppSep = "",
     ppWsSep = " ",
     ppOrder = order,
-    ppOutput = outputToAll bars
+    ppOutput = logToAllBars bars
     }
         where fmtTitle t = xmobarColor white "" t
               sanitTitle t = " ~ " ++ (shorten 50 t)
@@ -122,9 +130,6 @@ myLogHook bars = dynamicLogWithPP xmobarPP {
               fmtCurrentWs id = fmtWs wsBc ("[" ++ id ++ "]")
               fmtVisibleWs = fmtWs "black"
               order (ws:_:t:_) = [ws, t]
-              outputToAll bars msg = doOutput bars
-                  where doOutput (x:xs) = hPutStrLn x msg >> outputToAll xs msg
-                        doOutput (x:_) = hPutStrLn x msg
               white = "#e4ebed"
               wsBc = "#1a6078"
 
