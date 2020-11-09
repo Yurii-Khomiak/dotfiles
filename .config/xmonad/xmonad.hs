@@ -63,7 +63,7 @@ myNormalBorderColor  = "#292d3e"
 myFocusedBorderColor = "#bbc5ff"
 
 myWorkspaces = (map show [1..9]) ++ myExtraWorkspaces
-myExtraWorkspaces = ["0"]
+myExtraWorkspaces = ["0", "chat", "music", "movie"]
 
 xmobarConfigFile = "~/.config/xmobar/.xmobarrc"
 
@@ -176,10 +176,13 @@ mediaKeybindings = [
     ("<XF86AudioRaiseVolume>", spawn "amixer set Master 5%+ unmute")
     ]
 
-extraWorkspaceKeybinding = [
-    ("M-0", windows $ W.greedyView (head myExtraWorkspaces)),
-    ("M-S-0", windows $ W.shift (head myExtraWorkspaces))
-    ]
+extraWorkspaceKeybinding = concat [ genMoveAndShiftToBinding k w | (k, w) <- keysAndWss ]
+    where
+        keysAndWss = [("0", "0"), ("c", "chat"), (",", "music"), ("v", "movie")]
+        genMoveAndShiftToBinding key ws = [
+            ("M-" ++ key, windows $ W.greedyView ws),
+            ("M-S-" ++ key, windows $ W.shift ws)
+            ]
 
 keybindings = xmonadKeybindings
     ++ windowKeybindings
