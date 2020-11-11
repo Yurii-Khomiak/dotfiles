@@ -20,6 +20,8 @@ import XMonad.Actions.CopyWindow(kill1)
 import XMonad.Layout.Fullscreen(fullscreenEventHook, fullscreenManageHook)
 import XMonad.Layout.IndependentScreens
 
+import XMonad.Hooks.EwmhDesktops(ewmh)
+
 import Layouts
 
 -------------------------------------------------------------------------------
@@ -29,7 +31,7 @@ import Layouts
 main = do
     bars <- spawnStatusBars
     importantEnv <- genImportantEnv
-    xmonad $ defaults importantEnv bars
+    xmonad $ ewmh $ defaults importantEnv bars
 
 -------------------------------------------------------------------------------
 -- Main
