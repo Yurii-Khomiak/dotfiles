@@ -1,0 +1,14 @@
+#!/bin/sh
+
+appname=$1
+
+info=$(pacmd list-sink-inputs | grep 'index\|application\.name\|muted' | grep -i -B 2 "$appname")
+
+index=$(echo "$info" | grep index | awk '{print $2}')
+ismuted=$(echo "$info" | grep muted | awk '{print $2}')
+
+onoff=$(test "$ismuted" = "no" && echo "yes" || echo "no")
+
+msg=$(test "$onoff" = "yes" && echo "Muted" || echo "Unmuted")
+pacmd set-sink-input-mute $index "$onoff" && echo "$msg"
+
