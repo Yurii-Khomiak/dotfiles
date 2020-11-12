@@ -1,14 +1,29 @@
 #!/bin/sh
 
-appname=$1
+get_app_to_be_muted() {
+	local allinfo="$1"
+	apps=$(echo "$allinfo" | grep application\.name | awk '{print $3}' | sed 's/\"//g')
+	choice=$(echo "$apps" | dmenu)
+	echo "$choice"
+}
 
-info=$(pacmd list-sink-inputs | grep 'index\|application\.name\|muted' | grep -i -B 2 "$appname")
+mute_app() {
+	local info=$1
 
-index=$(echo "$info" | grep index | awk '{print $2}')
-ismuted=$(echo "$info" | grep muted | awk '{print $2}')
+	index=$(echo "$info" | grep index | awk '{print $2}')
+	ismuted=$(echo "$info" | grep muted | awk '{print $2}')
 
-onoff=$(test "$ismuted" = "no" && echo "yes" || echo "no")
+	onoff=$(test "$ismuted" = "no" && echo "yes" || echo "no")
 
-msg=$(test "$onoff" = "yes" && echo "Muted" || echo "Unmuted")
-pacmd set-sink-input-mute $index "$onoff" && echo "$msg"
+	msg=$(test "$onoff" = "yes" && echo "Muted" || echo "Unmuted")
+	pacmd set-sink-input-mute $index "$onoff" && echo "$msg"
+}
+
+allinfo=$(pacmd list-sink-inputs | grep 'index\|application\.name\|muted')
+
+appname=$([ -z "$1" ] && get_app_to_be_muted "$allinfo" || echo "$1")
+[ -z "$appname" ] && exit 0
+
+appinfo=$(echo "$allinfo" | grep -i -B 2 "$appname")
+mute_app "$appinfo"
 
