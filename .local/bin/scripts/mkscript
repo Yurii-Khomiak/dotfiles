@@ -10,5 +10,5 @@ script_file=$1
 printf "#!/bin/sh\n\n\n\n" > "$script_file"
 chmod +x "$script_file"
 
-[ ! -z "$EDITOR" ] && $EDITOR "$script_file"
+[ ! -z "$EDITOR" ] && "$EDITOR" "$script_file"
 
