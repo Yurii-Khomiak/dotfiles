@@ -1,0 +1,12 @@
+#!/bin/sh
+
+choice=$(echo "on off" | tr " " "\n" | dmenu)
+
+[ -z "$choice" ] && exit 1
+
+if [ "$choice" = "on" ]; then
+	xrandr --output eDP-1-1 --left-of HDMI-0 --auto
+elif [ "$choice" = "off" ]; then
+	xrandr --output eDP-1-1 --off
+fi;
+

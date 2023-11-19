@@ -1,0 +1,29 @@
+source ~/.config/nvim/after/plugin/basics.vim
+
+let mapleader = " "
+
+" Default indentation
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
+set incsearch
+
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+
+map gd :action GotoDeclaration<cr>
+map gD :action GotoImplementation<cr>
+map <leader>sf :action GotoFile<cr>
+map <leader>sr :action RecentFiles<cr>
+map <leader>sw :action FindInPath<cr>
+map <leader>vrn :action RenameElement<cr>
+nnoremap <leader>y "+y
+nnoremap <leader>Y 0"+y$
+vnoremap <leader>y "+y
+
+
+map <C-p> "+p
+

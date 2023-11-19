@@ -1,0 +1,21 @@
+set drawbox
+set hidden!
+
+cmd edit-config ${{
+	$EDITOR ~/.config/lf/lfrc
+	lf -remote "send $id source ~/.config/lf/lfrc"
+}}
+
+cmd view-images-in-current-dir $feh -F "$f"
+
+cmd unzip-selected-file $unzip "$f"
+
+map J $lf -remote "send $id cd $(sed -e 's/\s*#.*//' -e '/^$/d' -e 's/^\S*\s*//' $XDG_DATA_HOME/bm-dirs | fzf)"
+map <c-r> reload
+map o &mimeopen "$f"
+map O $mimeopen --ask "$f"
+map r :delete "$f"
+map C edit-config
+map V view-images-in-current-dir
+map Z unzip-selected-file
+

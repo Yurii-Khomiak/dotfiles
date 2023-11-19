@@ -1,0 +1,12 @@
+#!/bin/sh
+
+bg_image=$1
+
+[ -z "$bg_image" ] && echo "Usage: bgmake <bg_image.png>" && exit 1
+[ ! -f "$bg_image" ] && printf "Image \"$bg_image\" does not exist\n" && exit 1
+
+cp "$bg_image" "$XDG_DATA_HOME/bg.png" \
+	&& convert +append "$bg_image" "$bg_image" "$XDG_DATA_HOME/bg_for_lock.png" \
+	&& echo "Successfully update bg.png and bg_for_lock.png"
+
+
