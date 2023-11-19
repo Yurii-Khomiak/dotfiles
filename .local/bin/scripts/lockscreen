@@ -1,5 +1,0 @@
-#!/bin/sh
-# Locks the screen
-
-slock
-
