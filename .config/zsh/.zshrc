@@ -39,7 +39,7 @@ personal_config="$XDG_CONFIG_HOME/zsh/.personal"
 
 sp() {
 	local project_dir="$HOME/myprojects"
-	local search_result=$(find "$project_dir/" -maxdepth 2 -type d \
+	local search_result=$(find "$project_dir/" -maxdepth 3 -type d \
 		| sed 's/.*myprojects\///' \
 		| fzf)
 	if [ ! -z "$search_result" ]; then
@@ -59,7 +59,7 @@ sp() {
 
 search_and_open_in_editor() {
 	local search_location=$1
-	local search_result=$(find "$search_location" -type f\
+	local search_result=$(find "$search_location" -type f \
 		| cut -f2 \
 		| fzf)
 	if [ ! -z "$search_result" ]; then

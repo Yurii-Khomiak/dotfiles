@@ -14,16 +14,17 @@ set ideajoin
 set ideastatusicon=gray
 set idearefactormode=keep
 
-map gd :action GotoDeclaration<cr>
-map gD :action GotoImplementation<cr>
-map <leader>sf :action GotoFile<cr>
-map <leader>sr :action RecentFiles<cr>
-map <leader>sw :action FindInPath<cr>
-map <leader>vrn :action RenameElement<cr>
+nnoremap gd :action GotoDeclaration<cr>
+nnoremap gD :action GotoImplementation<cr>
+nnoremap <leader>sf :action GotoFile<cr>
+nnoremap <leader>sr :action RecentFiles<cr>
+nnoremap <leader>sw :action FindInPath<cr>
+nnoremap <leader>vrn :action RenameElement<cr>
+nnoremap <leader>* :action ShowUsages<cr>
+
 nnoremap <leader>y "+y
 nnoremap <leader>Y 0"+y$
 vnoremap <leader>y "+y
-
-
-map <C-p> "+p
+nnoremap <C-p> "+p
+vnoremap <C-p> "+p
 

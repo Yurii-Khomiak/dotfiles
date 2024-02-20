@@ -5,8 +5,8 @@ choice=$(echo "on off" | tr " " "\n" | dmenu)
 [ -z "$choice" ] && exit 1
 
 if [ "$choice" = "on" ]; then
-	xrandr --output HDMI-0 --right-of eDP-1-1 --auto
+	xrandr --output HDMI-1-0 --right-of eDP-1 --auto
 elif [ "$choice" = "off" ]; then
-	xrandr --output HDMI-0 --off
+	xrandr --output HDMI-1-0 --off
 fi;
 
